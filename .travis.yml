@@ -1,0 +1,14 @@
+#whenver we work with docker, need to mention sudo required. so that travis environment can prepare accordingly.
+sudo: required
+
+#letting travis know that, we need docker preinstalled.
+services: 
+  - docker
+
+# here testing will be done with dev file and deployment will be done using prod Dockerfile.
+before_install: 
+  - docker build -t sendevour/docker-react -f Dockerfile.dev .
+
+# action to be performed for testing. here, -- --coverage is added to avoid npm run test waiting for user to press q.
+script:
+ - docker run sendevour/docker-react npm run test -- --coverage
