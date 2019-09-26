@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  web:
+    # the below line with . generally takes dockerfile in the current directory, but we want to use custom file.
+    #build: .
+    # to use custom docker file, context mena which folder to look for, "." -> current directory
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # use the node_modules inside the container do not map.
+      - /app/node_modules
+      # map all files in current dir to app folder inside the conatiner.
+      - .:/app
+  tests:
+    #here ports are not needed as we are just testing
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - /app/node_modules
+      - .:/app
+    #command section overrides the container's default command
+    command: ["npm", "run","test"]
