@@ -10,5 +10,7 @@ before_install:
   - docker build -t sendevour/docker-react -f Dockerfile.dev .
 
 # action to be performed for testing. here, -- --coverage is added to avoid npm run test waiting for user to press q.
+# with -- --coverage didnt work, https://stackoverflow.com/questions/55926939/node-in-docker-npm-test-and-exit 
+# above link helped for exit with -e CI=true flag
 script:
- - docker run sendevour/docker-react npm run test -- --coverage
+ - docker run -e CI=true sendevour/docker-react npm run test -- --coverage
