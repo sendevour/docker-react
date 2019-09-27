@@ -17,14 +17,27 @@ script:
 
 #AWS section for deployment
 deploy:
+  # this can be anythink that is supported by travis CI, AWS, heroku, digitalocean etc.
+  # its elasticbeanstalk here since, we have created one and using that.
   provider: elasticbeanstalk
+  # the region where the project at aws is created.
   region: "us-east-2"
+  # this is the application name at aws
   app: "docker-react"
+  # this the environemnt created by beanstalk during project creationa at aws.
   env: "DockerReact-env"
+  # when we create an app automatically, a bucket will be created like the below,
+  # this can be searched at Services-> S3-> search by region u have choosen 
   bucket_name: "elasticbeanstalk-us-east-2-331576726827"
+  # this folder within bucket_name will be created only when we successfuly deploy the app.
+  # this will be name of the application by default.
   bucket_path: "docker-react"
+  # we want deploy to happen only on any commit to master branch, that is what on denotes.
   on:
     branch: master
+  # from aws->services-> IAM , we created a user for deployment at beanstalk with full access and generated below info.
+  # rather using the key directly, copy the access key and secret access key and create as environment variables under the 
+  # travis-ci project's settings-> environment section.
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key:
     secure: $AWS_SECRET_KEY
